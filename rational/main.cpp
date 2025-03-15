@@ -8,6 +8,9 @@ int main() {
     std::cout << "Enter the second rational number." << std::endl;
     std::cin >> q;
 
+    std::cout << "p = " << p << std::endl;
+    std::cout << "q = " << q << std::endl;
+
     std::cout << "p + q = " << p + q << std::endl;
     std::cout << "p - q = " << p - q << std::endl;
     std::cout << "p * q = " << p * q << std::endl;
@@ -21,11 +24,10 @@ int main() {
     std::cout << "double(p) " << static_cast<double>(p + q) << std::endl;
     std::cout << "string(p) " << static_cast<std::string>(p + q) << std::endl;
 
-    q += p;
-    std::cout << "p + q = " << p + q << std::endl;
-    std::cout << "-p = " << p + q << std::endl;
+    std::cout << "(q += p) = " << (q += p) << std::endl;
+    std::cout << "-p = " << -p << std::endl;
     std::cout << "++p = " << ++p << std::endl;
-    std::cout << "q++ = " << q++ << std::endl;
+    std::cout << "q++ = " << p++ << std::endl;
 
     return 0;
 }

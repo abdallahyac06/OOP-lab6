@@ -1,36 +1,35 @@
 #include "rational.h"
 #include <iostream>
-
-int gcd(int a, int b) {
-    int r = a % b;
-    while (r) {
-        a = b;
-        b = r;
-        r = a % b;
-    }
-    return abs(b);
-}
+#include <cmath>
 
 Rational::Rational(int num, int denom) {
     setRational(num, denom);
 }
 
+int Rational::gcd() const {
+    int a = abs(numerator), b = denominator, r = a % b;
+    while (r) {
+        a = b;
+        b = r;
+        r = a % b;
+    }
+    return b;
+}
+
 void Rational::reduce() {
-    int n = gcd(numerator, denominator);
+    int n = gcd();
     numerator /= n;
     denominator /= n;
 }
 
 void Rational::setRational(int num, int denom) {
     if (denom == 0) {
-        std::cout << "Zero Division Error. Automatically set to 0/1." << std::endl;
-        numerator = 0;
-        denominator = 1;
-    } else {
-        numerator = (num * denom >= 0)? abs(num): -abs(num);
-        denominator = abs(denom);
-        reduce();
+        std::cerr << "Zero Devision Error." << std::endl;
+        exit(0);
     }
+    numerator = ((num > 0) == (denom > 0))? abs(num): -abs(num);
+    denominator = abs(denom);
+    reduce();
 }
 
 int Rational::getNumerator() const {
@@ -66,7 +65,7 @@ Rational Rational::operator-() const {
 }
 
 Rational& Rational::operator+=(const Rational &other) {
-    *this = *this + other;
+    *this = this->operator+(other);
     return *this;
 }
 Rational& Rational::operator++() {
@@ -81,7 +80,7 @@ const Rational Rational::operator++(int) {
 }
 
 bool Rational::operator<(const Rational &other) const {
-    return this->operator-(other).numerator < 0;
+    return numerator * other.denominator < other.numerator * denominator;
 }
 
 bool Rational::operator==(const Rational &other) const {
@@ -106,6 +105,8 @@ std::ostream &operator<<(std::ostream &output, const Rational &rational) {
 }
 
 std::istream &operator>>(std::istream &input, Rational &rational) {
-    input >> rational.numerator >> rational.denominator;
+    int num, denom;
+    input >> num >> denom;
+    rational.setRational(num, denom);
     return input;
 }

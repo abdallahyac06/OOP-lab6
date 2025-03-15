@@ -3,13 +3,14 @@
 
 #include <iostream>
 
-int gcd(int, int);
 
 class Rational {
     private:
-        int numerator;
-        int denominator;
-        void reduce();
+    int numerator;
+    int denominator;
+    int gcd() const;
+    void reduce();
+
     public:
         Rational(int = 0, int = 1);
         void setRational(int, int);
