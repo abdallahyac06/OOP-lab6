@@ -6,10 +6,10 @@
 
 class Rational {
     private:
-    int numerator;
-    int denominator;
-    int gcd() const;
-    void reduce();
+        int numerator;
+        int denominator;
+        int gcd() const;
+        void reduce();
 
     public:
         Rational(int = 0, int = 1);
@@ -25,14 +25,14 @@ class Rational {
         Rational operator-() const;
         Rational& operator+=(const Rational &);
         Rational& operator++();
-        const Rational operator++(int);
+        Rational operator++(int);
 
-        bool operator<(const Rational &) const;
         bool operator==(const Rational &) const;
-        bool operator<=(const Rational &other) const {return *this < other || *this == other;}
+        bool operator<(const Rational &) const;
+        bool operator<=(const Rational &other) const {return !(other < *this);}
         bool operator>(const Rational &other) const {return other < *this;}
-        bool operator!=(const Rational &other) const {return !(other == *this);}
-        bool operator>=(const Rational &other) const {return other <= *this;}
+        bool operator!=(const Rational &other) const {return !(*this == other);}
+        bool operator>=(const Rational &other) const {return !(*this < other);}
 
         operator int() const;
         operator double() const;

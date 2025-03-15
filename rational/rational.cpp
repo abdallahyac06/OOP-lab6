@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cmath>
 
-Rational::Rational(int num, int denom) {
-    setRational(num, denom);
+Rational::Rational(int numerator, int denominator): numerator(numerator), denominator(denominator) {
+    reduce();
 }
 
 int Rational::gcd() const {
@@ -17,18 +17,21 @@ int Rational::gcd() const {
 }
 
 void Rational::reduce() {
+    if (denominator == 0) {
+        std::cerr << "Devision by Zero Error." << std::endl;
+        exit(1);
+    }
+
+    numerator = (denominator > 0)? numerator: -numerator;
+    denominator = abs(denominator);
     int n = gcd();
     numerator /= n;
     denominator /= n;
 }
 
 void Rational::setRational(int num, int denom) {
-    if (denom == 0) {
-        std::cerr << "Zero Devision Error." << std::endl;
-        exit(0);
-    }
-    numerator = ((num > 0) == (denom > 0))? abs(num): -abs(num);
-    denominator = abs(denom);
+    numerator = num;
+    denominator = denom;
     reduce();
 }
 
@@ -41,23 +44,23 @@ int Rational::getDenominator() const {
 }
 
 Rational Rational::operator+(const Rational &other) const {
-    return Rational(numerator * other.denominator + denominator * other.numerator,
-                denominator * other.denominator);
+    return Rational(numerator * other.denominator + other.numerator * denominator,
+                    denominator * other.denominator);
 }
 
 Rational Rational::operator-(const Rational &other) const {
-    return Rational(numerator * other.denominator - denominator * other.numerator,
-                denominator * other.denominator);
+    return Rational(numerator * other.denominator - other.numerator * denominator,
+                    denominator * other.denominator);
 }
 
 Rational Rational::operator*(const Rational &other) const {
     return Rational(numerator * other.numerator,
-                denominator * other.denominator);
+                    denominator * other.denominator);
 }
 
 Rational Rational::operator/(const Rational &other) const {
     return Rational(numerator * other.denominator,
-                denominator * other.numerator);
+                    denominator * other.numerator);
 }
 
 Rational Rational::operator-() const {
@@ -73,7 +76,7 @@ Rational& Rational::operator++() {
     return *this;
 }
 
-const Rational Rational::operator++(int) {
+Rational Rational::operator++(int) {
     Rational tmp = *this;
     numerator += denominator;
     return tmp;
@@ -87,12 +90,12 @@ bool Rational::operator==(const Rational &other) const {
     return (numerator == other.numerator && denominator == other.denominator);
 }
 
-Rational::operator double() const {
-    return static_cast<double>(numerator) / denominator;
-}
-
 Rational::operator int() const {
     return numerator / denominator;
+}
+
+Rational::operator double() const {
+    return static_cast<double>(numerator) / denominator;
 }
 
 Rational::operator std::string() const {
@@ -105,8 +108,7 @@ std::ostream &operator<<(std::ostream &output, const Rational &rational) {
 }
 
 std::istream &operator>>(std::istream &input, Rational &rational) {
-    int num, denom;
-    input >> num >> denom;
-    rational.setRational(num, denom);
+    input >> rational.numerator >> rational.denominator;
+    rational.reduce();
     return input;
 }

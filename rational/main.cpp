@@ -20,14 +20,14 @@ int main() {
     std::cout << "p >= q : " << (p >= q) << std::endl;
     std::cout << "p == q : " << (p == q) << std::endl;
 
-    std::cout << "int(p) " << static_cast<int>(p + q) << std::endl;
-    std::cout << "double(p) " << static_cast<double>(p + q) << std::endl;
-    std::cout << "string(p) " << static_cast<std::string>(p + q) << std::endl;
+    std::cout << "int(p) " << static_cast<int>(p) << std::endl;
+    std::cout << "double(p) " << static_cast<double>(p) << std::endl;
+    std::cout << "string(p) " << static_cast<std::string>(p) << std::endl;
 
     std::cout << "(q += p) = " << (q += p) << std::endl;
     std::cout << "-p = " << -p << std::endl;
     std::cout << "++p = " << ++p << std::endl;
-    std::cout << "q++ = " << p++ << std::endl;
+    std::cout << "p++ = " << p++ << std::endl;
 
     return 0;
 }
