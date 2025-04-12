@@ -11,12 +11,7 @@ void Polynomial::polynomialCombine() {
         for (int j = i + 1; j < size; ++j) {
             if (exponents[i] == exponents[j]) {
                 coefficients[i] += coefficients[j];
-                for (int k = j; k < size - 1; ++k) {
-                    coefficients[k] = coefficients[k + 1];
-                    exponents[k] = exponents[k + 1];
-                }
-                --size;
-                --j;
+                coefficients[j] = 0;
             }
         }
     }
@@ -49,12 +44,12 @@ void Polynomial::printPolynomial() {
         return;
     }
 
-    int absCoefficient;
+    double absCoefficient;
 
     for (int i = 0; i < size; i++) {
         if (i == 0) {
             if (coefficients[i] < 0) {
-                std::cout << "-";
+                std::cout << '-';
             }
         } else {
             if (coefficients[i] > 0) {
@@ -65,12 +60,15 @@ void Polynomial::printPolynomial() {
         }
 
         absCoefficient = std::abs(coefficients[i]);
-        if (exponents[i] == 0) {
+        if (!(absCoefficient == 1 && exponents[i] != 0)) {
             std::cout << absCoefficient;
-        } else if (exponents[i] == 1) {
-            std::cout << absCoefficient << "x";
-        } else {
-            std::cout << absCoefficient << "x^" << exponents[i];
+        }
+
+        if (exponents[i] > 0) {
+            std::cout << 'x';
+            if (exponents[i] > 1) {
+                std::cout << '^' << exponents[i];
+            }
         }
     }
 

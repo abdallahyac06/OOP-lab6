@@ -3,7 +3,7 @@
 
 class Polynomial {
     private:
-        int coefficients[100] = {0};
+        double coefficients[100] = {0};
         int exponents[100] = {0};
         int size;
         void polynomialCombine();;
