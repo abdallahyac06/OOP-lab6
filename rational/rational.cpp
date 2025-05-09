@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Rational::Rational(int numerator, int denominator): numerator(numerator), denominator(denominator) {
+Rational::Rational(int num, int denom): numerator(num), denominator(denom) {
     reduce();
 }
 
@@ -43,6 +43,14 @@ int Rational::getDenominator() const {
     return denominator;
 }
 
+Rational &Rational::operator=(const Rational &other) {
+    if (this != &other) {
+        numerator = other.numerator;
+        denominator = other.denominator;
+    }
+    return *this;
+}
+
 Rational Rational::operator+(const Rational &other) const {
     return Rational(numerator * other.denominator + other.numerator * denominator,
                     denominator * other.denominator);
@@ -51,6 +59,10 @@ Rational Rational::operator+(const Rational &other) const {
 Rational Rational::operator-(const Rational &other) const {
     return Rational(numerator * other.denominator - other.numerator * denominator,
                     denominator * other.denominator);
+}
+
+Rational Rational::operator-() const {
+    return Rational(-numerator, denominator);
 }
 
 Rational Rational::operator*(const Rational &other) const {
@@ -63,14 +75,6 @@ Rational Rational::operator/(const Rational &other) const {
                     denominator * other.numerator);
 }
 
-Rational Rational::operator-() const {
-    return Rational(-numerator, denominator);
-}
-
-Rational& Rational::operator+=(const Rational &other) {
-    *this = this->operator+(other);
-    return *this;
-}
 Rational& Rational::operator++() {
     numerator += denominator;
     return *this;
@@ -82,12 +86,47 @@ Rational Rational::operator++(int) {
     return tmp;
 }
 
-bool Rational::operator<(const Rational &other) const {
-    return numerator * other.denominator < other.numerator * denominator;
+Rational& Rational::operator--() {
+    numerator -= denominator;
+    return *this;
+}
+
+Rational Rational::operator--(int) {
+    Rational tmp = *this;
+    numerator -= denominator;
+    return tmp;
+}
+
+bool Rational::operator!() const {
+    return numerator == 0;
 }
 
 bool Rational::operator==(const Rational &other) const {
     return (numerator == other.numerator && denominator == other.denominator);
+}
+
+bool Rational::operator!=(const Rational &other) const {
+    return (numerator != other.numerator || denominator != other.denominator);
+}
+
+bool Rational::operator<(const Rational &other) const {
+    return numerator * other.denominator < other.numerator * denominator;
+}
+
+bool Rational::operator>(const Rational &other) const {
+    return numerator * other.denominator > other.numerator * denominator;
+}
+
+bool Rational::operator<=(const Rational &other) const {
+    return numerator * other.denominator <= other.numerator * denominator;
+}
+
+bool Rational::operator>=(const Rational &other) const {
+    return numerator * other.denominator >= other.numerator * denominator;
+}
+
+Rational::operator bool() const {
+    return numerator != 0;
 }
 
 Rational::operator int() const {
